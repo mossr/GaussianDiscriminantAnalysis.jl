@@ -1,0 +1,4 @@
+name = "GaussianDiscriminantAnalysis"
+uuid = "63d2d038-9c3f-4736-a267-754e54e91e50"
+authors = ["Robert Moss <rmoss92@gmail.com>"]
+version = "0.1.0"
