@@ -1,6 +1,6 @@
 # GaussianDiscriminantAnalysis.jl
 [![Build Status](https://github.com/mossr/GaussianDiscriminantAnalysis.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/mossr/GaussianDiscriminantAnalysis.jl/actions/workflows/CI.yml)
-[![codecov](https://codecov.io/gh/mossr/GaussianDiscriminantAnalysis.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/mossr/GaussianDiscriminantAnalysis.jl)
+[![codecov](https://codecov.io/gh/mossr/GaussianDiscriminantAnalysis.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/mossr/GaussianDiscriminantAnalysis.jl)
 
 <p align="center">
     <img src="./img/cover.png">
