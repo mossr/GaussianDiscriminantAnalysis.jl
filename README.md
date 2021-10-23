@@ -11,7 +11,7 @@
 ] add https://github.com/mossr/GaussianDiscriminantAnalysis.jl
 ```
 
-## Quadratic disriminant analysis
+## Quadratic discriminant analysis
 ```julia
 using GaussianDiscriminantAnalysis
 
@@ -19,7 +19,7 @@ using GaussianDiscriminantAnalysis
 predict, mv_negative, mv_positive = qda(𝒟)
 ```
 
-## Linear disriminant analysis
+## Linear discriminant analysis
 ```julia
 predict, mv_negative, mv_positive = lda(𝒟)
 ```
