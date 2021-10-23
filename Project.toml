@@ -2,3 +2,17 @@ name = "GaussianDiscriminantAnalysis"
 uuid = "63d2d038-9c3f-4736-a267-754e54e91e50"
 authors = ["Robert Moss <rmoss92@gmail.com>"]
 version = "0.1.0"
+
+[deps]
+Convex = "f65535da-76fb-5f13-bab9-19810c17039a"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SCS = "c946c3f1-0d1f-5ce8-9dea-7daa1f7e2d13"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
