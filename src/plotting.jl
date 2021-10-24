@@ -1,30 +1,13 @@
 global NEGATIVE_COLOR = "#d62728"
 global POSITIVE_COLOR = "#2ca02c"
 
-function plot_gda(𝒟;
-                  use_qda=true,
-                  soft=true,
-                  k=1,
-                  show_svm=false,
-                  return_predict=false,
-                  subplots=false,
-                  figsize=[6.4, 4.8],
-                  show_legend=false,
-                  show_axes=true,
-                  flip_colors=true,
-                  show_analysis=false)
-    # TODO: use Plots interface directly.
-    # default(fontfamily="Computer Modern", framestyle=:box) # LaTex-style
 
-    if subplots
-        figure(figsize=figsize.*1.75)
-    else
-        figure(figsize=figsize)
-    end
+function gdaplot(𝒟; soft=true, use_qda=true, k=1, rev=false,
+                 heatmap=false, levels=100, show_axes=true,
+                 subplots=false, show_svm=false, show_analysis=false,
+                 show_legend=true, return_predict=false)
 
-    if subplots
-        subplot(2,2,3)
-    end
+    default(fontfamily="Computer Modern", framestyle=:box) # LaTex-style
 
     pos_data = get_positive_data(𝒟)
     neg_data = get_negative_data(𝒟)
@@ -49,127 +32,130 @@ function plot_gda(𝒟;
     #============================================#
     # plot prediction boundary contours
     #============================================#
-    dbX = range(min(minimum(x1_positive), minimum(x1_negative)), stop=max(maximum(x1_positive), maximum(x1_negative)), length=1000)
-    dbY = range(min(minimum(x2_positive), minimum(x2_negative)) - 2, stop=max(maximum(x2_positive), maximum(x2_negative)), length=1000)
+    min_x1_pos = minimum(x1_positive)
+    min_x1_neg = minimum(x1_negative)
+    min_x1 = min(min_x1_pos, min_x1_neg)
+
+    max_x1_pos = maximum(x1_positive)
+    max_x1_neg = maximum(x1_negative)
+    max_x1 = max(max_x1_pos, max_x1_neg)
+
+    min_x2_pos = minimum(x2_positive)
+    min_x2_neg = minimum(x2_negative)
+    min_x2 = min(min_x2_pos, min_x2_neg)
+
+    max_x2_pos = maximum(x2_positive)
+    max_x2_neg = maximum(x2_negative)
+    max_x2 = max(max_x2_pos, max_x2_neg)
+
+    # adjust min/max to add margin
+    scale = 0.1
+    adjust_x1 = (max_x1 - min_x1) * scale
+    adjust_x2 = (max_x2 - min_x2) * scale
+    min_x1 -= adjust_x1
+    max_x1 += adjust_x1
+    min_x2 -= adjust_x2
+    max_x2 += adjust_x2
+
+    dbX = range(min_x1, stop=max_x1, length=1000)
+    dbY = range(min_x2, stop=max_x2, length=1000)
     dbZ = [predict([x,y]) for y in dbY, x in dbX] # Note x-y "for" ordering
     vmin = minimum(dbZ)
     vmax = maximum(dbZ)
-    TwoSlopeNorm = PyPlot.matplotlib.colors.TwoSlopeNorm
-    if soft
-        # Decision boundary is at zero.
-        norm = TwoSlopeNorm(vmin=vmin, vcenter=0, vmax=vmax)
+
+    buckets = [vmin, vmin/2, 0, vmax/2, vmax] # shift colormap so 0 is at center
+    normed = (buckets .- vmin) / (vmax - vmin)
+    cmap = cgrad(:RdYlGn, normed, rev=rev)
+
+    if heatmap
+        fig = Plots.heatmap(dbX, dbY, dbZ, c=cmap, colorbar_entry=!subplots)
     else
-        # Decision boundary binary, thus is relative to each k class prediction.
-        norm = TwoSlopeNorm(vmin=vmin, vcenter=(vmin+vmax)/2, vmax=vmax)
+        fig = contourf(dbX, dbY, dbZ, c=cmap, levels=levels, linewidth=0, colorbar_entry=!subplots)
     end
-    # Colormap so that when `flip_colors == false`:
-    #   red   = class 0 = negative
-    #   green = class 1 = positive
-    if flip_colors
-        cmap_string = "RdYlGn_r"
-        positive_color_contour = "plasma"
-        negative_color_contour = "viridis"
-        positive_color = NEGATIVE_COLOR
-        negative_color = POSITIVE_COLOR
+
+    if rev
+        positive_color_contour = :plasma
+        negative_color_contour = :viridis
+        positive_color = GaussianDiscriminantAnalysis.NEGATIVE_COLOR
+        negative_color = GaussianDiscriminantAnalysis.POSITIVE_COLOR
     else
-        cmap_string = "RdYlGn"
-        positive_color_contour = "viridis"
-        negative_color_contour = "plasma"
-        positive_color = POSITIVE_COLOR
-        negative_color = NEGATIVE_COLOR
-    end
-    contourf(dbX, dbY, dbZ, 100, cmap=cmap_string, vmin=vmin, vmax=vmax, norm=norm)
-
-    #============================================#
-    # plot scattered datapoints
-    #============================================#
-    scatter(x1_negative, x2_negative, label="non-failure", alpha=0.5,color=negative_color, s=10, edgecolor="black")
-    scatter(x1_positive, x2_positive, label="failure", alpha=0.5, color=positive_color, s=10, edgecolor="black")
-
-    if !show_axes
-        tick_params(bottom=false, labelbottom=false, left=false, labelleft=false)
+        positive_color_contour = :viridis
+        negative_color_contour = :plasma
+        positive_color = GaussianDiscriminantAnalysis.POSITIVE_COLOR
+        negative_color = GaussianDiscriminantAnalysis.NEGATIVE_COLOR
     end
 
-    # save axis limits
-    current_xlim = xlim()
-    current_ylim = ylim()
+    current_ylim = ylims()
+    current_xlim = xlims()
+
+    scatter!(x1_negative, x2_negative, label="negative", alpha=0.5, color=negative_color, msc=:black, msw=2)
+    scatter!(x1_positive, x2_positive, label="positive", alpha=0.5, color=positive_color, msc=:black, msw=2)
 
     #============================================#
     # plot multivariate Gaussian contours (positive)
     #============================================#
-    fX = range(-2, stop=maximum(x1_positive)*1.1, length=1000)
-    fY = range(-2, stop=!use_qda ? maximum(x2_negative)*1.1 : maximum(x2_positive)*1.1 , length=1000)
-    fZ = [pdf(mv_positive, [x,y]) for y in fY, x in fX] # Note x-y "for" ordering
-    contour(fX, fY, fZ, alpha=0.75, cmap=positive_color_contour)
+    pX = range(min_x1, stop=max_x1, length=1000)
+    pY = range(min_x2, stop=max_x2, length=1000)
+    pZ = [pdf(mv_positive, [x,y]) for y in pY, x in pX] # Note x-y "for" ordering
+    contour!(pX, pY, pZ, lw=2, alpha=0.5, color=positive_color_contour, colorbar_entry=false)
 
     #============================================#
     # plot multivariate Gaussian contours (negative)
     #============================================#
-    nfX = range(-2, stop=maximum(x1_negative)*1.1, length=1000)
-    nfY = range(-2, stop=maximum(x2_negative)*1.1, length=1000)
-    nfZ = [pdf(mv_negative, [x,y]) for y in nfY, x in nfX] # Note x-y "for" ordering
-    contour(nfX, nfY, nfZ, alpha=0.75, cmap=negative_color_contour)
+    nX = range(min_x1, stop=max_x1, length=1000)
+    nY = range(min_x2, stop=max_x2, length=1000)
+    nZ = [pdf(mv_negative, [x,y]) for y in nY, x in nX] # Note x-y "for" ordering
+    contour!(nX, nY, nZ, lw=2, alpha=0.5, color=negative_color_contour, colorbar_entry=false)
 
-    # restore axis limits
-    xlim(current_xlim)
-    ylim(current_ylim)
+    # restore axis limits (i.e. tight layout of contourf/heatmap)
+    xlims!(current_xlim)
+    ylims!(current_ylim)
 
-    # 1D Gaussians
-    if subplots
-        subplot(4,2,3)
-        hist(x1_positive, color=positive_color, density=true, alpha=0.5)
-        hist(x1_negative, color=negative_color, density=true, alpha=0.5)
-        normal_x1_positive = fit_mle(Normal, x1_positive) # NOTE: Gamma?
-        normal_x1_negative = fit_mle(Normal, x1_negative)
-        Z_current_xlim = xlim()
-        Z_current_ylim = ylim()
-        plot(fY, [pdf(normal_x1_positive, x) for x in fY], color=positive_color)
-        plot(nfY, [pdf(normal_x1_negative, x) for x in nfY], color=negative_color)
-        xlim(Z_current_xlim)
-        ylim(Z_current_ylim)
-        xticks([])
-
-        subplot(2,4,7)
-        hist(x2_positive, orientation="horizontal", color=positive_color, density=true, alpha=0.5)
-        hist(x2_negative, orientation="horizontal", color=negative_color, density=true, alpha=0.5)
-        normal_x2_positive = fit_mle(Normal, x2_positive) # NOTE: Gamma?
-        normal_x2_negative = fit_mle(Normal, x2_negative)
-        d_current_xlim = xlim()
-        d_current_ylim = ylim()
-        base = gca().transData
-        rot = matplotlib.transforms.Affine2D().rotate_deg(90)
-        plot(fY, [-pdf(normal_x2_positive, x) for x in fY], transform=rot+base, color=positive_color) # notice negative pdf to flip transformation
-        plot(nfY, [-pdf(normal_x2_negative, x) for x in nfY], transform=rot+base, color=negative_color) # notice negative pdf to flip transformation
-        xlim(d_current_xlim)
-        ylim(d_current_ylim)
-        yticks([])
-    end
-
-    # Boundary line calculated using support vector machines (SVMs)
     if show_svm
         @info "Running SVM..."
-        svm_classify, svm_x, svm_y = svm(pos_data, neg_data)
-        if subplots
-            subplot(2,2,3)
-        end
-        plot(svm_x, svm_y, label="SVM", color="black")
+        svm_classify, svm_boundary = GaussianDiscriminantAnalysis.svm(pos_data, neg_data)
+
+        svm_y = svm_boundary(dbX)
+        plot!(dbX, svm_y, label="SVM", color="black", lw=2)
 
         if show_analysis
             analyze_fit_svm(svm_classify, pos_data, neg_data)
         end
     end
 
+    if subplots
+        lay = @layout [a{0.3h} _; b{0.7h, 0.7w} c]
+
+        topfig = histogram(x1_positive, color=positive_color, normalize=true, alpha=0.5, label=nothing, xaxis=nothing)
+        histogram!(x1_negative, color=negative_color, normalize=true, alpha=0.5, label=nothing)
+        normal_x1_positive = fit_mle(Normal, x1_positive) # NOTE: Try Gamma?
+        normal_x1_negative = fit_mle(Normal, x1_negative)
+        plot!(x->pdf(normal_x1_positive, x), color=positive_color, xlim=xlims(), label=false, lw=2)
+        plot!(x->pdf(normal_x1_negative, x), color=negative_color, xlim=xlims(), label=false, lw=2)
+        xlims!(current_xlim) # match limits of main plot
+
+        sidefig = histogram(x2_positive, color=positive_color, normalize=true, alpha=0.5, label=nothing, yaxis=nothing, orientation=:h)
+        histogram!(x2_negative, color=negative_color, normalize=true, alpha=0.5, label=nothing, orientation=:h)
+        normal_x2_positive = fit_mle(Normal, x2_positive) # NOTE: Try Gamma?
+        normal_x2_negative = fit_mle(Normal, x2_negative)
+        plot!([pdf(normal_x2_positive, x) for x in pY], pY, color=positive_color, xlim=xlims(), label=false, lw=2)
+        plot!([pdf(normal_x2_negative, x) for x in nY], nY, color=negative_color, xlim=xlims(), label=false, lw=2)
+        ylims!(current_ylim) # match limits of main plot
+
+        fig = plot(topfig, fig, sidefig, layout=lay)
+    end
+
+    if !show_axes
+        plot!(axis=nothing)
+    end
+
     if show_analysis
         analyze_fit_gda(predict, pos_data, neg_data)
     end
 
-    if show_legend
-        legend()
+    if !show_legend
+        plot!(legend=false)
     end
 
-    # subplots_adjust(wspace=0.08, hspace=0.1)
-    tight_layout()
-    fig = gcf()
-
-    return return_predict ? (fig, predict, mv_positive, svm_classify) : fig
+    return return_predict ? (fig, predict) : fig
 end

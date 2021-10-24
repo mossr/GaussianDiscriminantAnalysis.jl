@@ -1,13 +1,14 @@
 module GaussianDiscriminantAnalysis
 
 using Distributions
+using ColorSchemes
 using Convex
-using PyPlot
+using Plots
 using SCS
 using LinearAlgebra
 using Random
 
-export Input, Target, qda, lda, extract_data, get_data, get_positive_data, get_negative_data, plot_gda, generate_example_data
+export Input, Target, qda, lda, extract_data, get_data, get_positive_data, get_negative_data, gdaplot, generate_example_data
 
 include("gda.jl")
 include("lda.jl")

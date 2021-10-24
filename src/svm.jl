@@ -23,9 +23,8 @@ function svm(pos_data, neg_data)
     svm_x = range(min(minimum(x1_positive), minimum(x1_negative)), stop=max(maximum(x1_positive), maximum(x1_negative)), length=1000)
 
     w, b = compute_svm(pos_data, neg_data)
-    svm_boundary = (x,w,b) -> (-w[1] * x .+ b)/w[2] # line of the decision boundary
-    svm_y = svm_boundary(svm_x, w, b)
+    svm_boundary = (x) -> (-w[1] * x .+ b)/w[2] # line of the decision boundary (closure with w & b)
     svm_classify = x -> sign((-w'*x + b)/w[2]) > 0 ? 1 : -1 # was : 0
 
-    return svm_classify, svm_x, svm_y
+    return svm_classify, svm_boundary
 end
