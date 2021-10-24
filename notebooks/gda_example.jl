@@ -44,7 +44,7 @@ const Target = Union{Bool, Int}
 𝒟 = generate_example_data(100, seed=0)
 
 # ╔═╡ e7cba812-1618-4f60-9960-3af703044dc9
-(fig, predict) = gdaplot(𝒟, return_predict=true, rev=true)
+(fig, predict) = gdaplot(𝒟, return_predict=true, rev=true, subplots=true, show_legend=false)
 
 # ╔═╡ 1b0aef4e-26bc-4041-bb0c-f8d2cfb3f297
 fig

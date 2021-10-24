@@ -68,9 +68,9 @@ function gdaplot(𝒟; soft=true, use_qda=true, k=1, rev=false,
     cmap = cgrad(:RdYlGn, normed, rev=rev)
 
     if heatmap
-        fig = Plots.heatmap(dbX, dbY, dbZ, c=cmap, colorbar_entry=!subplots)
+        fig = Plots.heatmap(dbX, dbY, dbZ, c=cmap, colorbar_entry=!(subplots || !show_legend))
     else
-        fig = contourf(dbX, dbY, dbZ, c=cmap, levels=levels, linewidth=0, colorbar_entry=!subplots)
+        fig = contourf(dbX, dbY, dbZ, c=cmap, levels=levels, linewidth=0, colorbar_entry=!(subplots || !show_legend))
     end
 
     if rev

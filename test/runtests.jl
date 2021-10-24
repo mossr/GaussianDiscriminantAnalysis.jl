@@ -14,8 +14,8 @@ using GaussianDiscriminantAnalysis
     gdaplot(𝒟, use_qda=false, k=2)
     gdaplot(𝒟, use_qda=false, soft=false)
     gdaplot(𝒟, use_qda=false, soft=false, k=2)
-    gdaplot(𝒟, subplots=true, show_svm=true, show_legend=true, show_analysis=true)
+    gdaplot(𝒟, subplots=true, show_svm=true, show_legend=false, show_analysis=true)
     gdaplot(𝒟, show_axes=false)
-    gdaplot(𝒟, rev=false)
+    gdaplot(𝒟, heatmap=true, rev=true)
     true
 end
