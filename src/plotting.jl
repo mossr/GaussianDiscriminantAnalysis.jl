@@ -2,10 +2,19 @@ global NEGATIVE_COLOR = "#d62728"
 global POSITIVE_COLOR = "#2ca02c"
 
 
-function gdaplot(𝒟; soft=true, use_qda=true, k=1, rev=false,
-                 heatmap=false, levels=100, show_axes=true,
-                 subplots=false, show_svm=false, show_analysis=false,
-                 show_legend=true, return_predict=false)
+function gdaplot(𝒟;
+        soft=true,            # soft/hard prediction boundary
+        use_qda=true,         # QDA or LDA
+        k=1,                  # specify which class k to share covariance (LDA only)
+        rev=false,            # reverse "positive" and "negative"
+        heatmap=false,        # use heatmap instead of filled contours
+        levels=100,           # number of levels for the filled contours
+        show_axes=true,       # toggle displaying of axes
+        subplots=false,       # include single-dimensional Gaussian fits in subplots
+        show_svm=false,       # show SVM decision boundary
+        show_analysis=false,  # print out goodness of prediction
+        show_legend=true,     # toggle showing of legend
+        return_predict=false) # return (fig, predict) instead of just (fig)
 
     default(fontfamily="Computer Modern", framestyle=:box) # LaTex-style
 
@@ -88,8 +97,8 @@ function gdaplot(𝒟; soft=true, use_qda=true, k=1, rev=false,
     current_ylim = ylims()
     current_xlim = xlims()
 
-    scatter!(x1_negative, x2_negative, label="negative", alpha=0.5, color=negative_color, msc=:black, msw=2)
-    scatter!(x1_positive, x2_positive, label="positive", alpha=0.5, color=positive_color, msc=:black, msw=2)
+    scatter!(x1_negative, x2_negative, label="negative", alpha=0.5, color=negative_color, ms=3, msc=:black, msw=2)
+    scatter!(x1_positive, x2_positive, label="positive", alpha=0.5, color=positive_color, ms=3, msc=:black, msw=2)
 
     #============================================#
     # plot multivariate Gaussian contours (positive)

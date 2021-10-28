@@ -51,7 +51,7 @@ function generate_example_data(n=100; seed=missing)
         Random.seed!(seed)
     end
 
-    mv_y0 = MvNormal([0.18, 6.0], [0.02 0; 0 0.7] .^ 2)
+    mv_y0 = MvNormal([0.18, 6.0], [0.04 0; 0 0.7] .^ 2)
     mv_y1 = MvNormal([0.2, 3.5], [0.15 0; 0 0.1] .^ 2)
     y0 = rand(mv_y0, n)
     y1 = rand(mv_y1, n)

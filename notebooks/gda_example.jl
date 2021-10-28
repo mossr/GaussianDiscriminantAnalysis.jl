@@ -41,7 +41,7 @@ const Target = Union{Bool, Int}
 """
 
 # ╔═╡ cb9a24af-936e-4087-8fa7-a0d9cb460712
-𝒟 = generate_example_data(100, seed=0)
+𝒟 = generate_example_data(100, seed=0xC0FFEE)
 
 # ╔═╡ e7cba812-1618-4f60-9960-3af703044dc9
 (fig, predict) = gdaplot(𝒟, return_predict=true, rev=true, subplots=true, show_legend=false)
@@ -57,6 +57,65 @@ fig
 
 # ╔═╡ aa0af20d-7e29-40e1-8304-3e455640d9f7
 predict([x₁, x₂])
+
+# ╔═╡ 00e5e67d-9a7c-46f9-b3cd-d2f17b49a403
+md"""
+# Different plotting examples
+"""
+
+# ╔═╡ 08006448-16c4-4418-9c1e-6976a80f801a
+f₁ = gdaplot(𝒟)
+
+# ╔═╡ 6004ca16-7b3f-474d-87d2-e7a4292229c6
+savefig(f₁, "../img/plot-qda.svg")
+
+# ╔═╡ dcb07f7b-6d2b-4d4c-ae98-978dfde9e588
+f₂ = gdaplot(𝒟, heatmap=true)
+
+# ╔═╡ bab2cf21-8f72-40c5-987a-f61b2f9f9aa7
+savefig(f₂, "../img/plot-heatmap.svg")
+
+# ╔═╡ 29dee7c9-309b-42f4-9106-693e077d6734
+f₃ = gdaplot(𝒟, rev=true)
+
+# ╔═╡ 2a5631ed-b544-439d-9548-7566e8b1e1e2
+savefig(f₃, "../img/plot-rev.svg")
+
+# ╔═╡ fbfb7c18-8d64-4e60-af0b-7edaab968b79
+f₄ = gdaplot(𝒟, subplots=true)
+
+# ╔═╡ 793d2022-0f23-4bd5-a684-02b09ec9490c
+savefig(f₄, "../img/plot-subplots.svg")
+
+# ╔═╡ f3dad744-e5be-4e6e-b990-c642520f3251
+f₅ = gdaplot(𝒟, show_svm=true)
+
+# ╔═╡ 6fe1cba4-84ba-4cc8-9864-157de1adad9c
+savefig(f₅, "../img/plot-svm.svg")
+
+# ╔═╡ 1f2cc4cf-b5be-430c-b0cc-f19a074f0e61
+f₆ = gdaplot(𝒟, soft=false)
+
+# ╔═╡ 1bc3f7e5-2a93-4208-9711-e0a4fc563f7e
+savefig(f₆, "../img/plot-hard.svg")
+
+# ╔═╡ cb1bad1c-fdc9-4bb0-a4c3-7600c6a3c74c
+f₇ = gdaplot(𝒟, use_qda=false)
+
+# ╔═╡ 62c5bf1d-a475-4c5f-9512-b6f3d7b5a21d
+savefig(f₇, "../img/plot-lda-k1.svg")
+
+# ╔═╡ 80e44db2-c3cc-44bb-b158-f6dc16f4b3a5
+f₈ = gdaplot(𝒟, use_qda=false, k=2)
+
+# ╔═╡ 2f6201e6-2b7c-40e1-a512-6da4b678c0fa
+savefig(f₈, "../img/plot-lda-k2.svg")
+
+# ╔═╡ ce576fa3-ff6e-4175-b239-e0f024c14e58
+f₉ = gdaplot(𝒟, use_qda=false, k=2, soft=false)
+
+# ╔═╡ 25d1d7ba-444a-42c5-a91b-d4905550c858
+savefig(f₉, "../img/plot-lda-k2-hard.svg")
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1145,5 +1204,24 @@ version = "0.9.1+5"
 # ╠═aa0af20d-7e29-40e1-8304-3e455640d9f7
 # ╠═d5e3fcf4-6cd9-42ff-9a0c-b913e5c4b08c
 # ╠═44f03c07-1e54-4312-a695-bca5ecc6a9ce
+# ╟─00e5e67d-9a7c-46f9-b3cd-d2f17b49a403
+# ╠═08006448-16c4-4418-9c1e-6976a80f801a
+# ╠═6004ca16-7b3f-474d-87d2-e7a4292229c6
+# ╠═dcb07f7b-6d2b-4d4c-ae98-978dfde9e588
+# ╠═bab2cf21-8f72-40c5-987a-f61b2f9f9aa7
+# ╠═29dee7c9-309b-42f4-9106-693e077d6734
+# ╠═2a5631ed-b544-439d-9548-7566e8b1e1e2
+# ╠═fbfb7c18-8d64-4e60-af0b-7edaab968b79
+# ╠═793d2022-0f23-4bd5-a684-02b09ec9490c
+# ╠═f3dad744-e5be-4e6e-b990-c642520f3251
+# ╠═6fe1cba4-84ba-4cc8-9864-157de1adad9c
+# ╠═1f2cc4cf-b5be-430c-b0cc-f19a074f0e61
+# ╠═1bc3f7e5-2a93-4208-9711-e0a4fc563f7e
+# ╠═cb1bad1c-fdc9-4bb0-a4c3-7600c6a3c74c
+# ╠═62c5bf1d-a475-4c5f-9512-b6f3d7b5a21d
+# ╠═80e44db2-c3cc-44bb-b158-f6dc16f4b3a5
+# ╠═2f6201e6-2b7c-40e1-a512-6da4b678c0fa
+# ╠═ce576fa3-ff6e-4175-b239-e0f024c14e58
+# ╠═25d1d7ba-444a-42c5-a91b-d4905550c858
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
