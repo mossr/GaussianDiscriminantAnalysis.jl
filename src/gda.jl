@@ -31,9 +31,6 @@ using LinearAlgebra
 # ╔═╡ a3a3d53f-3dca-44e0-adb7-7a0d6d48ad54
 using Random
 
-# ╔═╡ 37541ae5-93a1-4076-95aa-8c6d8bd3acfd
-using PlutoUI
-
 # ╔═╡ b0e0714c-56f0-426f-9de7-9c7234a73510
 md"""
 # GaussianDiscriminantAnalysis.jl
@@ -597,13 +594,13 @@ md"""
 """
 
 # ╔═╡ 05b4d1f7-8917-4510-a3d2-421a0c66f1cc
-is_notebook = true
+is_notebook = false
 
 # ╔═╡ f204d9da-3cab-4ca3-a597-50009e5cdf28
 is_notebook && TableOfContents()
 
 # ╔═╡ 029f7c5f-38c0-4937-abed-05d3e429f824
-# is_notebook && using PlutoUI
+is_notebook && using PlutoUI
 
 # ╔═╡ e69e96ec-f6d3-48ff-9c6f-d915f9c9a995
 if is_notebook
@@ -1744,7 +1741,6 @@ version = "0.9.1+5"
 # ╠═05b4d1f7-8917-4510-a3d2-421a0c66f1cc
 # ╠═3b296e2e-5e54-467d-a235-5582a615e040
 # ╠═a9bbe145-8c9b-418c-88d1-5a79c25bf7d1
-# ╠═37541ae5-93a1-4076-95aa-8c6d8bd3acfd
 # ╠═029f7c5f-38c0-4937-abed-05d3e429f824
 # ╠═e69e96ec-f6d3-48ff-9c6f-d915f9c9a995
 # ╟─00000000-0000-0000-0000-000000000001
