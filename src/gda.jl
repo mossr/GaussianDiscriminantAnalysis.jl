@@ -4,12 +4,6 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 3b296e2e-5e54-467d-a235-5582a615e040
-using Pkg
-
-# ╔═╡ a9bbe145-8c9b-418c-88d1-5a79c25bf7d1
-pkg"dev PlutoUI"
-
 # ╔═╡ c5be1b1c-468e-4994-aa71-e02f4ba5807c
 using Distributions
 
@@ -35,6 +29,8 @@ using Random
 md"""
 # GaussianDiscriminantAnalysis.jl
 This file contains the entire GDA package code and include visualizations when viewing as a Pluto notebook.
+
+Source: [https://github.com/mossr/GaussianDiscriminantAnalysis.jl](https://github.com/mossr/GaussianDiscriminantAnalysis.jl)
 """
 
 # ╔═╡ 16176cd3-03e7-4c5f-a2e5-6a08e9b1b687
@@ -599,11 +595,9 @@ is_notebook = false
 # ╔═╡ f204d9da-3cab-4ca3-a597-50009e5cdf28
 is_notebook && TableOfContents()
 
-# ╔═╡ 029f7c5f-38c0-4937-abed-05d3e429f824
-is_notebook && using PlutoUI
-
 # ╔═╡ e69e96ec-f6d3-48ff-9c6f-d915f9c9a995
 if is_notebook
+	using PlutoUI
 	𝒟 = generate_example_data(100, seed=0xC0FFEE)
 end
 
@@ -632,7 +626,6 @@ ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
 Convex = "f65535da-76fb-5f13-bab9-19810c17039a"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -1260,7 +1253,7 @@ version = "1.24.3"
 
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "Dates", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "Markdown", "Random", "Reexport", "UUIDs"]
-path = "C:\\Users\\RobertMoss\\.julia\\dev\\PlutoUI"
+git-tree-sha1 = "b68904528fd538f1cb6a3fbc44d2abdc498f9e8e"
 uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 version = "0.7.21"
 
@@ -1739,9 +1732,6 @@ version = "0.9.1+5"
 # ╠═1467dd57-0191-4fd6-9bdc-0c21d6c0acec
 # ╟─289086b7-c068-4f61-9639-20c52f41d5d1
 # ╠═05b4d1f7-8917-4510-a3d2-421a0c66f1cc
-# ╠═3b296e2e-5e54-467d-a235-5582a615e040
-# ╠═a9bbe145-8c9b-418c-88d1-5a79c25bf7d1
-# ╠═029f7c5f-38c0-4937-abed-05d3e429f824
 # ╠═e69e96ec-f6d3-48ff-9c6f-d915f9c9a995
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
