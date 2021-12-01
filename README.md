@@ -1,4 +1,5 @@
 # GaussianDiscriminantAnalysis.jl
+[![Pluto source](https://img.shields.io/badge/pluto-source/docs-4063D8)](https://mossr.github.io/GaussianDiscriminantAnalysis.jl/notebooks/gda.html)
 [![Build Status](https://github.com/mossr/GaussianDiscriminantAnalysis.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/mossr/GaussianDiscriminantAnalysis.jl/actions/workflows/CI.yml)
 [![codecov](https://codecov.io/gh/mossr/GaussianDiscriminantAnalysis.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/mossr/GaussianDiscriminantAnalysis.jl)
 
