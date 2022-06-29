@@ -119,7 +119,7 @@ end
 _Hard linear discriminant analysis_, provides prediction function `δ` that gives either -1 or 1 to which class the input `x` is closest to/classified as.
 
 \$\\begin{equation}
-\\delta_k(x) = -\\frac{1}{2} \\log(|\\Sigma_k|) - \\frac{1}{2} (x - \\mu_k)^\\top\\Sigma_k^{-1}(x - \\mu_k) + \\log\\pi_k
+\\delta_k(x) = x^\\top\\Sigma^{-1}\\mu_k - \\frac{1}{2} \\mu_k^\\top\\Sigma^{-1}\\mu_k + \\log\\pi_k
 \\end{equation}\$
 """
 function lda_hard(μ₀, Σ₀, π₀, μ₁, Σ₁, π₁)
@@ -590,16 +590,16 @@ md"""
 """
 
 # ╔═╡ 05b4d1f7-8917-4510-a3d2-421a0c66f1cc
-is_notebook = false
-
-# ╔═╡ f204d9da-3cab-4ca3-a597-50009e5cdf28
-is_notebook && TableOfContents()
+is_notebook = true
 
 # ╔═╡ e69e96ec-f6d3-48ff-9c6f-d915f9c9a995
 if is_notebook
 	using PlutoUI
 	𝒟 = generate_example_data(100, seed=0xC0FFEE)
 end
+
+# ╔═╡ f204d9da-3cab-4ca3-a597-50009e5cdf28
+is_notebook && TableOfContents()
 
 # ╔═╡ 07b0385b-b065-4e16-ba93-ee34457044c5
 is_notebook && gdaplot(𝒟)
