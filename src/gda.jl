@@ -590,7 +590,7 @@ md"""
 """
 
 # ╔═╡ 05b4d1f7-8917-4510-a3d2-421a0c66f1cc
-is_notebook = true
+is_notebook = false
 
 # ╔═╡ e69e96ec-f6d3-48ff-9c6f-d915f9c9a995
 if is_notebook
