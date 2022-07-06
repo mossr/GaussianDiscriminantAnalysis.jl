@@ -179,7 +179,7 @@ Compute the SVM weights and biases of the input data. Taken from [Convevx.jl exa
 \\lVert \\mathbf w \\lVert^2 + C * \\left( \\sum_{i=1}^N \\max(1 + b - \\mathbf w^\\top \\mathbf x_i, 0) + \\sum_{i=1}^M \\max(1 - b + \\mathbf w^\\top \\mathbf y_i, 0) \\right)
 \\end{align}\$
 """
-function compute_svm(pos_data, neg_data, solver=() -> SCS.Optimizer(verbose=0))
+function compute_svm(pos_data, neg_data, solver=() -> SCS.Optimizer())
     # Create variables for the separating hyperplane w'*x = b.
     n = 2 # dimensionality of data
     C = 10 # inverse regularization parameter in the objective
